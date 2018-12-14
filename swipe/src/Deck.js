@@ -28,13 +28,20 @@ class Deck extends Component {
     // this._panResponder = panResponder;
   }
 
+  getCardStyle() {
+    return {
+      ...this.state.postition.getLayout(),
+      transform: [{ rotate: "-45deg" }]
+    };
+  }
+
   renderCards() {
     return this.props.data.map((item, index) => {
       if (index === 0) {
         return (
           <Animated.View
             key={item.id}
-            style={this.state.postition.getLayout()}
+            style={this.getCardStyle()}
             {...this.state.panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
