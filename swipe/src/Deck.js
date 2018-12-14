@@ -5,17 +5,17 @@ class Deck extends Component {
   constructor(props) {
     super(props);
 
-    const postition = new Animated.ValueXY();
+    const position = new Animated.ValueXY();
 
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gesture) => {
-        postition.setValue({ x: gesture.dx, y: gesture.dy });
+        position.setValue({ x: gesture.dx, y: gesture.dy });
       },
       onPanResponderRelease: () => {}
     });
 
-    this.state = { postition, panResponder };
+    this.state = { position, panResponder };
 
     // notice we will never setState on panResponder,
     // panResponder is its own object, nothing to do with state,
@@ -29,9 +29,18 @@ class Deck extends Component {
   }
 
   getCardStyle() {
+    const { position } = this.state;
+
+    // position.x -> how much that componenet has moved in the x direction
+
+    const rotate = position.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: ["-120deg", "0deg", "120deg"]
+    });
+
     return {
-      ...this.state.postition.getLayout(),
-      transform: [{ rotate: "-45deg" }]
+      ...position.getLayout(),
+      transform: [{ rotate }]
     };
   }
 
