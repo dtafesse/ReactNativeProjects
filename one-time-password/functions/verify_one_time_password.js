@@ -8,5 +8,24 @@ module.exports = (req, res) => {
   const phone = String(req.body.phone).replace(/[^\d]/g, "");
   const code = parseInt(req.body.code);
 
-  adim;
+  admin
+    .auth()
+    .getUser(phone)
+    .then(() => {
+      const ref = admin.database().ref("users/" + phone);
+
+      ref.on("value", snapshot => {
+        const user = snapshot.val();
+
+        if (user.code !== code || !user.codeValid) {
+          return res.status(422).send({ error: "Code is not Valid" });
+        }
+
+        ref.update({ codeValid: false });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(422).send({ error: "User not found" });
+    });
 };
