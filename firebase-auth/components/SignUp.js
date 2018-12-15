@@ -9,16 +9,14 @@ const ROOT_URL =
 class SignUp extends Component {
   state = { phone: "" };
 
-  handleSubmit = () => {
-    axios
-      .post(`${ROOT_URL}/createUser`, {
-        phone: this.state.phone
-      })
-      .then(() => {
-        axios.post(`${ROOT_URL}/requestOneTimePassword`, {
-          phone: this.state.phone
-        });
-      });
+  handleSubmit = async () => {
+    await axios.post(`${ROOT_URL}/createUser`, {
+      phone: this.state.phone
+    });
+
+    await axios.post(`${ROOT_URL}/requestOneTimePassword`, {
+      phone: this.state.phone
+    });
   };
 
   render() {
