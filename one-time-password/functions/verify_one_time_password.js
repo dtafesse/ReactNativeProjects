@@ -15,6 +15,7 @@ module.exports = (req, res) => {
       const ref = admin.database().ref("users/" + phone);
 
       ref.on("value", snapshot => {
+        ref.off();
         const user = snapshot.val();
 
         if (user.code !== code || !user.codeValid) {
@@ -22,6 +23,11 @@ module.exports = (req, res) => {
         }
 
         ref.update({ codeValid: false });
+        // generate a JWT and send it back to the user
+        admin
+          .auth()
+          .createCustomToken(phone)
+          .then(token => res.send({ token: token }));
       });
     })
     .catch(err => {
