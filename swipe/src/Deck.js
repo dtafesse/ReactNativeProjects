@@ -113,7 +113,10 @@ class Deck extends Component {
         // cards we have not gotten to, just render them
         return (
           // must be wrapped in an "Animated.view" to deal with flashing images
-          <Animated.View key={item.id} style={styles.cardStyle}>
+          <Animated.View
+            key={item.id}
+            style={[styles.cardStyle, { top: 10 * (i - this.state.index) }]}
+          >
             {this.props.renderCard(item)}
           </Animated.View>
         );
