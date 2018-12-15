@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, Animated, PanResponder, Dimensions } from "react-native";
+import {
+  View,
+  Animated,
+  PanResponder,
+  Dimensions,
+  StyleSheet
+} from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
@@ -85,30 +91,48 @@ class Deck extends Component {
       return this.props.renderNoMoreCards();
     }
 
-    return this.props.data.map((item, i) => {
-      // if these cards are already swiped return null
-      if (i < this.state.index) {
-        return null;
-      }
-      if (i === this.state.index) {
+    return this.props.data
+      .map((item, i) => {
+        // if these cards are already swiped return null
+        if (i < this.state.index) {
+          return null;
+        }
+
+        // current active card
+        if (i === this.state.index) {
+          return (
+            <Animated.View
+              key={item.id}
+              style={[this.getCardStyle(), styles.cardStyle]}
+              {...this._panResponder.panHandlers}
+            >
+              {this.props.renderCard(item)}
+            </Animated.View>
+          );
+        }
+        // cards we have not gotten to, just render them
         return (
-          <Animated.View
-            key={item.id}
-            style={this.getCardStyle()}
-            {...this._panResponder.panHandlers}
-          >
+          <View key={item.id} style={styles.cardStyle}>
             {this.props.renderCard(item)}
-          </Animated.View>
+          </View>
         );
-      }
-      // cards we have not gotten to, just render them
-      return this.props.renderCard(item);
-    });
+      })
+      .reverse();
+
+    // calling reverse because the style: position: "absolute"
+    // makes the last card render 1st..
   }
 
   render() {
     return <View>{this.renderCards()}</View>;
   }
 }
+
+const styles = StyleSheet.create({
+  cardStyle: {
+    position: "absolute",
+    width: SCREEN_WIDTH
+  }
+});
 
 export default Deck;
