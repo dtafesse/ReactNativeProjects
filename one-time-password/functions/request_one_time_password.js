@@ -1,4 +1,6 @@
 const admin = require("firebase-admin");
+const twilio = require("./twilio");
+const config = require("./config");
 
 module.exports = (req, res) => {
   if (!req.body.phone) {
@@ -11,5 +13,17 @@ module.exports = (req, res) => {
   admin
     .auth()
     .getUser(phone)
-    .then(user => {});
+    .then(userRecord => {
+      const code = Math.floor(Math.random() * 8999 + 1000);
+
+      twilio.messages.create({
+        body: `Your code is ${code}`,
+        to: phone,
+        from: config.accountPhoneNumber
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(422).send({ error: "User not found" });
+    });
 };
