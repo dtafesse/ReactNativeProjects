@@ -32,6 +32,7 @@ class Deck extends Component {
       }
     });
 
+    // current card to consider
     this.state = { index: 0 };
 
     // notice we will never setState on panResponder or position,
@@ -66,7 +67,7 @@ class Deck extends Component {
   }
 
   getCardStyle() {
-    // position.x -> how much that componenet has moved in the x direction
+    // _position.x -> how much that componenet has moved in the x direction
 
     const rotate = this._position.x.interpolate({
       inputRange: [-SCREEN_WIDTH * 2.0, 0, SCREEN_WIDTH * 2.0],
@@ -80,8 +81,12 @@ class Deck extends Component {
   }
 
   renderCards() {
-    return this.props.data.map((item, index) => {
-      if (index === 0) {
+    return this.props.data.map((item, i) => {
+      // if these cards are already swiped return null
+      if (i < this.state.index) {
+        return null;
+      }
+      if (i === this.state.index) {
         return (
           <Animated.View
             key={item.id}
@@ -92,6 +97,7 @@ class Deck extends Component {
           </Animated.View>
         );
       }
+      // cards we have not gotten to, just render them
       return this.props.renderCard(item);
     });
   }
