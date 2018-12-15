@@ -32,21 +32,17 @@ class Deck extends Component {
       }
     });
 
-    this.state = { position, panResponder, index: 0 };
+    this.state = { index: 0 };
 
-    // notice we will never setState on panResponder,
-    // panResponder is its own object, nothing to do with state,
-    // 'this._panResponder = panResponder' and accessing
-    // it via 'this._panResponder in other methods, would have been VALID..
-    // however keep it in state, since thats how the documention has it.
+    // notice we will never setState on panResponder or position,
+    // 'panResponder' and 'position' are their own object, nothing to do with state,
 
-    // probably should be - doesnt make sense to use state, since both are changing without setState
-    // this._postition = postition;
-    // this._panResponder = panResponder;
+    this._position = position;
+    this._panResponder = panResponder;
   }
 
   resetPosition() {
-    Animated.spring(this.state.position, {
+    Animated.spring(this._position, {
       toValue: { x: 0, y: 0 }
     }).start();
   }
@@ -54,7 +50,7 @@ class Deck extends Component {
   forceSwipe(direction) {
     const x = direction === "right" ? SCREEN_WIDTH : -SCREEN_WIDTH;
 
-    Animated.timing(this.state.position, {
+    Animated.timing(this._position, {
       toValue: { x, y: 0 },
       duration: SWIPE_OUT_DURATION
     }).start(() => this.onSwipeComplete(direction));
@@ -65,20 +61,20 @@ class Deck extends Component {
     const item = data[this.state.index];
 
     direction === "right" ? onSwipeRight(item) : onSwipeLeft(item);
+    this._position.setValue({ x: 0, y: 0 });
+    this.setState({ index: this.state.index + 1 });
   }
 
   getCardStyle() {
-    const { position } = this.state;
-
     // position.x -> how much that componenet has moved in the x direction
 
-    const rotate = position.x.interpolate({
+    const rotate = this._position.x.interpolate({
       inputRange: [-SCREEN_WIDTH * 2.0, 0, SCREEN_WIDTH * 2.0],
       outputRange: ["-120deg", "0deg", "120deg"]
     });
 
     return {
-      ...position.getLayout(),
+      ...this._position.getLayout(),
       transform: [{ rotate }]
     };
   }
@@ -90,7 +86,7 @@ class Deck extends Component {
           <Animated.View
             key={item.id}
             style={this.getCardStyle()}
-            {...this.state.panResponder.panHandlers}
+            {...this._panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
           </Animated.View>
