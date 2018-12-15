@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "staging": "one-time-password-b31ae",
+    "default": "one-time-password-b31ae"
+  }
+}
