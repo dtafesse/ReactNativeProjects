@@ -112,13 +112,13 @@ class Deck extends Component {
         }
         // cards we have not gotten to, just render them
         return (
-          <View key={item.id} style={styles.cardStyle}>
+          // must be wrapped in an "Animated.view" to deal with flashing images
+          <Animated.View key={item.id} style={styles.cardStyle}>
             {this.props.renderCard(item)}
-          </View>
+          </Animated.View>
         );
       })
       .reverse();
-
     // calling reverse because the style: position: "absolute"
     // makes the last card render 1st..
   }
