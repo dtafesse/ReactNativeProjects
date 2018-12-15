@@ -50,10 +50,10 @@ class Deck extends Component {
     this._panResponder = panResponder;
   }
 
-  resetPosition() {
-    Animated.spring(this._position, {
-      toValue: { x: 0, y: 0 }
-    }).start();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data !== this.props.data) {
+      this.setState({ index: 0 });
+    }
   }
 
   componentWillUpdate() {
@@ -79,6 +79,12 @@ class Deck extends Component {
     direction === "right" ? onSwipeRight(item) : onSwipeLeft(item);
     this._position.setValue({ x: 0, y: 0 });
     this.setState({ index: this.state.index + 1 });
+  }
+
+  resetPosition() {
+    Animated.spring(this._position, {
+      toValue: { x: 0, y: 0 }
+    }).start();
   }
 
   getCardStyle() {
