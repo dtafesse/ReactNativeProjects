@@ -16,11 +16,26 @@ module.exports = (req, res) => {
     .then(userRecord => {
       const code = Math.floor(Math.random() * 8999 + 1000);
 
-      twilio.messages.create({
-        body: `Your code is ${code}`,
-        to: phone,
-        from: config.accountPhoneNumber
-      });
+      twilio.messages.create(
+        {
+          body: `Your code is ${code}`,
+          to: phone,
+          from: config.accountPhoneNumber
+        },
+        err => {
+          if (err) {
+            console.log(err);
+            return res.status(422).send({ error: "Invalid Phone Number" });
+          }
+          // there is no err so save the code to fb database
+          admin
+            .database()
+            .ref("users/" + phone)
+            .update({ code: code, codeValid: true }, () => {
+              res.send({ success: true });
+            });
+        }
+      );
     })
     .catch(err => {
       console.log(err);
