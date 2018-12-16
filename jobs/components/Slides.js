@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, StyleSheet, Dimensions } from "react-native";
+import { View, Text, FlatList, StyleSheet, Dimensions } from "react-native";
 import { Button } from "react-native-elements";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -18,25 +18,25 @@ class Slides extends Component {
     }
   };
 
-  renderSlides = () => {
-    return this.props.data.map((slide, index) => {
-      return (
-        <View
-          key={slide.text}
-          style={[styles.slide, { backgroundColor: slide.color }]}
-        >
-          <Text style={styles.slideText}>{slide.text}</Text>
-          {this.renderLastSlide(index)}
-        </View>
-      );
-    });
+  renderSlides = ({ item, index }) => {
+    return (
+      <View style={[styles.slide, { backgroundColor: item.color }]}>
+        <Text style={styles.slideText}>{item.text}</Text>
+        {this.renderLastSlide(index)}
+      </View>
+    );
   };
 
   render() {
     return (
-      <ScrollView horizontal pagingEnabled style={{ flex: 1 }}>
-        {this.renderSlides()}
-      </ScrollView>
+      <FlatList
+        horizontal
+        pagingEnabled
+        data={this.props.data}
+        keyExtractor={item => item.text}
+        renderItem={this.renderSlides}
+        style={{ flex: 1 }}
+      />
     );
   }
 }
