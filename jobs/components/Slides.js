@@ -18,7 +18,7 @@ class Slides extends Component {
     }
   };
 
-  renderSlides = ({ item, index }) => {
+  renderSlide = ({ item, index }) => {
     return (
       <View style={[styles.slide, { backgroundColor: item.color }]}>
         <Text style={styles.slideText}>{item.text}</Text>
@@ -34,7 +34,7 @@ class Slides extends Component {
         pagingEnabled
         data={this.props.data}
         keyExtractor={item => item.text}
-        renderItem={this.renderSlides}
+        renderItem={this.renderSlide}
         style={{ flex: 1 }}
       />
     );
