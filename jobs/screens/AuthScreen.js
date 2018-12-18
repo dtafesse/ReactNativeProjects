@@ -14,6 +14,10 @@ class AuthScreen extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {};
+}
+
 export default connect(
   null,
   actions
