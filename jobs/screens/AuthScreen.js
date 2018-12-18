@@ -6,15 +6,17 @@ import * as actions from "../actions";
 class AuthScreen extends Component {
   componentDidMount() {
     this.props.facebookLogin();
-    this.onAuthComplete();
+    this.onAuthComplete(this.props);
   }
 
-  componentDidUpdate() {
-    this.onAuthComplete();
+  componentDidUpdate(prevProps) {
+    if (prevProps.token !== this.props.token) {
+      this.onAuthComplete(this.props);
+    }
   }
 
-  onAuthComplete() {
-    if (this.props.token) {
+  onAuthComplete(props) {
+    if (props.token) {
       this.props.navigation.navigate("map");
     }
   }
