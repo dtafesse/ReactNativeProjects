@@ -15,18 +15,30 @@ import DeckScreen from "./screens/DeckScreen";
 import ReviewScreen from "./screens/ReviewScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 
-const MainNavigator = createBottomTabNavigator({
-  welcome: WelcomeScreen,
-  auth: AuthScreen,
-  main: createBottomTabNavigator({
-    map: MapScreen,
-    deck: DeckScreen,
-    review: createStackNavigator({
-      review: ReviewScreen,
-      settings: SettingsScreen
+const MainNavigator = createBottomTabNavigator(
+  {
+    welcome: WelcomeScreen,
+    auth: AuthScreen,
+    main: createBottomTabNavigator({
+      map: MapScreen,
+      deck: DeckScreen,
+      review: createStackNavigator(
+        {
+          review: ReviewScreen,
+          settings: SettingsScreen
+        },
+        {
+          navigationOptions: {
+            tabBarLabel: "Review Jobs"
+          }
+        }
+      )
     })
-  })
-});
+  },
+  {
+    lazy: true
+  }
+);
 
 const AppContainer = createAppContainer(MainNavigator);
 
