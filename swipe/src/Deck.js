@@ -50,6 +50,7 @@ class Deck extends Component {
     this._panResponder = panResponder;
   }
 
+  // think of using componentUpdate Instead.. since 'componentWillReceiveProps' is depreciated
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
       this.setState({ index: 0 });

@@ -6,20 +6,21 @@ import * as actions from "../actions";
 class AuthScreen extends Component {
   componentDidMount() {
     this.props.facebookLogin();
-    this.onAuthComplete(this.props);
+    this.onAuthComplete();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.onAuthComplete(nextProps);
+  componentDidUpdate() {
+    this.onAuthComplete();
   }
 
-  onAuthComplete(props) {
-    if (props.token) {
+  onAuthComplete() {
+    if (this.props.token) {
       this.props.navigation.navigate("map");
     }
   }
 
   render() {
+    // add a spinner here?
     return <View />;
   }
 }
