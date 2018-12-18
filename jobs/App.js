@@ -17,23 +17,38 @@ import SettingsScreen from "./screens/SettingsScreen";
 
 const MainNavigator = createBottomTabNavigator(
   {
-    welcome: WelcomeScreen,
-    auth: AuthScreen,
-    main: createBottomTabNavigator({
-      map: MapScreen,
-      deck: DeckScreen,
-      review: createStackNavigator(
-        {
-          review: ReviewScreen,
-          settings: SettingsScreen
-        },
-        {
-          navigationOptions: {
-            tabBarLabel: "Review Jobs"
+    welcome: {
+      screen: WelcomeScreen,
+      navigationOptions: {
+        tabBarVisible: false
+      }
+    },
+    auth: {
+      screen: AuthScreen,
+      navigationOptions: {
+        tabBarVisible: false
+      }
+    },
+    main: createBottomTabNavigator(
+      {
+        map: MapScreen,
+        deck: DeckScreen,
+        review: createStackNavigator(
+          {
+            review: ReviewScreen,
+            settings: SettingsScreen
+          },
+          {
+            navigationOptions: {
+              tabBarLabel: "Review Jobs"
+            }
           }
-        }
-      )
-    })
+        )
+      },
+      {
+        navigationOptions: { tabBarVisible: false }
+      }
+    )
   },
   {
     lazy: true
