@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Platform } from "react-native";
 import { connect } from "react-redux";
 import { MapView } from "expo";
 import { Card, Button } from "react-native-elements";
+import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import Swipe from "../components/Swipe";
 
 class DeckScreen extends Component {
@@ -33,7 +34,15 @@ class DeckScreen extends Component {
           <Text>{job.company}</Text>
           <Text>{job.formattedRelativeTime}</Text>
         </View>
-        <Text> {job.snippet.replace(/<b>/g, "").replace(/<\/b/g, "")}</Text>
+        <View style={{ height: 90 }}>
+          <Text>
+            {" "}
+            {job.snippet
+              .replace(/<b>/g, "")
+              .replace(/<\/b/g, "")
+              .trim()}
+          </Text>
+        </View>
       </Card>
     );
   }
@@ -44,7 +53,7 @@ class DeckScreen extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{ paddingTop: getStatusBarHeight() }}>
         <Swipe
           data={this.props.jobs}
           renderCard={this.renderCard}
