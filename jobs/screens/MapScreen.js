@@ -8,7 +8,7 @@ import * as actions from "../actions";
 class MapScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      tabBarLabel: "Review Jobs"
+      tabBarLabel: "Map"
     };
   };
 
