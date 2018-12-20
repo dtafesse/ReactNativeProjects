@@ -3,7 +3,7 @@ import {
   View,
   Text,
   Platform,
-  ScrollView,
+  FlatList,
   StyleSheet,
   Linking
 } from "react-native";
@@ -31,51 +31,55 @@ class ReviewScreen extends Component {
     };
   };
 
-  renderLikedJobs() {
-    return this.props.likedJobs.map(job => {
-      const {
-        jobtitle,
-        company,
-        formattedRelativeTime,
-        url,
-        longitude,
-        latitude,
-        jobkey
-      } = job;
+  renderLikedJob({ item }) {
+    const {
+      jobtitle,
+      company,
+      formattedRelativeTime,
+      url,
+      longitude,
+      latitude
+    } = item;
 
-      const initialRegion = {
-        longitude,
-        latitude,
-        latitudeDelta: 0.045,
-        longitudeDelta: 0.02
-      };
+    const initialRegion = {
+      longitude,
+      latitude,
+      latitudeDelta: 0.045,
+      longitudeDelta: 0.02
+    };
 
-      return (
-        <Card title={jobtitle} key={jobkey}>
-          <View style={{ height: 200 }}>
-            <MapView
-              style={{ flex: 1 }}
-              scrollEnabled={false}
-              cacheEnabled={Platform.OS === "android"}
-              initialRegion={initialRegion}
-            />
-            <View style={styles.detailWrapper}>
-              <Text style={styles.italics}>{company}</Text>
-              <Text style={styles.italics}>{formattedRelativeTime}</Text>
-            </View>
-            <Button
-              title='Apply Now!'
-              backgroundColor='#03A9F4'
-              onPress={() => Linking.openURL(url)}
-            />
+    return (
+      <Card title={jobtitle}>
+        <View style={{ height: 200 }}>
+          <MapView
+            style={{ flex: 1 }}
+            scrollEnabled={false}
+            cacheEnabled={Platform.OS === "android"}
+            initialRegion={initialRegion}
+          />
+          <View style={styles.detailWrapper}>
+            <Text style={styles.italics}>{company}</Text>
+            <Text style={styles.italics}>{formattedRelativeTime}</Text>
           </View>
-        </Card>
-      );
-    });
+          <Button
+            title='Apply Now!'
+            backgroundColor='#03A9F4'
+            onPress={() => Linking.openURL(url)}
+          />
+        </View>
+      </Card>
+    );
   }
 
   render() {
-    return <ScrollView>{this.renderLikedJobs()}</ScrollView>;
+    return (
+      <FlatList
+        data={this.props.likedJobs}
+        keyExtractor={item => item.jobkey}
+        renderItem={this.renderLikedJob}
+        style={{ flex: 1 }}
+      />
+    );
   }
 }
 
@@ -83,7 +87,8 @@ const styles = StyleSheet.create({
   detailWrapper: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 10
+    marginBottom: 10,
+    marginTop: 10
   },
   italics: {
     fontStyle: "italic"
