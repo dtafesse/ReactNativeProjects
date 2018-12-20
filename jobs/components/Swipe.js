@@ -119,7 +119,7 @@ class Swipe extends Component {
       if (i === this.state.index) {
         return (
           <Animated.View
-            key={item.id}
+            key={item[this.props.keyProp]}
             style={[this.getCardStyle(), styles.cardStyle]}
             {...this._panResponder.panHandlers}
           >
