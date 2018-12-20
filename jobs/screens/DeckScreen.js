@@ -6,6 +6,8 @@ import { Card, Button } from "react-native-elements";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import Swipe from "../components/Swipe";
 
+import * as actions from "../actions";
+
 class DeckScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -58,6 +60,7 @@ class DeckScreen extends Component {
           data={this.props.jobs}
           renderCard={this.renderCard}
           renderNoMoreCards={this.renderNoMoreCards}
+          onSwipeRight={job => this.props.likeJob(job)}
           keyProp='jobkey'
         />
       </View>
@@ -77,4 +80,7 @@ function mapStateToProps({ jobs }) {
   return { jobs: jobs.results };
 }
 
-export default connect(mapStateToProps)(DeckScreen);
+export default connect(
+  mapStateToProps,
+  actions
+)(DeckScreen);
