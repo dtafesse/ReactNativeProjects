@@ -53,7 +53,9 @@ const MainNavigator = createBottomTabNavigator(
         navigationOptions: { tabBarVisible: false },
         tabBarOptions: {
           labelStyle: { fontSize: 11 }
-        }
+        },
+        tabBarPosition: "bottom",
+        swipeEnabled: false
       }
     )
   },
