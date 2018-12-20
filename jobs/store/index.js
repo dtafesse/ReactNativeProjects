@@ -14,6 +14,7 @@ const store = createStore(
   )
 );
 
+// if you add a ".purge()" at the end, it will delete all the saved state previosuly
 persistStore(store, { storage: AsyncStorage, whitelist: ["likedJobs"] });
 
 export default store;
