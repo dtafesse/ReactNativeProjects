@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { MapView } from "expo";
 
 class MapScreen extends Component {
@@ -15,10 +15,22 @@ class MapScreen extends Component {
       latitude: 37,
       longitudeDelta: 0.04,
       latitudeDelta: 0.09
-    }
+    },
+    mapLoaded: false
   };
 
+  componentDidMount() {
+    this.setState({ mapLoaded: true });
+  }
+
   render() {
+    if (!this.state.mapLoaded) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={{ flex: 1 }}>
         <MapView style={{ flex: 1 }} region={this.state.region} />
