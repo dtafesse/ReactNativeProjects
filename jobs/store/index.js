@@ -1,20 +1,23 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import reducers from "../reducers";
-import { persistStore, autoRehydrate } from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
 import { AsyncStorage } from "react-native";
 
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+  whitelist: ["likedJobs"]
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
 const INITIAL_STATE = {};
-const store = createStore(
-  reducers,
+export const store = createStore(
+  persistedReducer,
   INITIAL_STATE,
-  compose(
-    applyMiddleware(thunk),
-    autoRehydrate()
-  )
+  compose(applyMiddleware(thunk))
 );
 
 // if you add a ".purge()" at the end, it will delete all the saved state previosuly
-persistStore(store, { storage: AsyncStorage, whitelist: ["likedJobs"] });
-
-export default store;
+export const persistor = persistStore(store);

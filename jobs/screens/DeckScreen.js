@@ -69,7 +69,6 @@ class DeckScreen extends Component {
   render() {
     return (
       <View style={{ paddingTop: getStatusBarHeight() }}>
-        {console.log(this.props.jobs)}
         <Swipe
           data={this.props.jobs}
           renderCard={this.renderCard}
