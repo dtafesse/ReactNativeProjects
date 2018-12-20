@@ -16,7 +16,6 @@ class ReviewScreen extends Component {
     const { navigate } = navigation;
     return {
       headerTitle: "Review Jobs",
-      tabBarLabel: "Review Jobs",
       headerRight: (
         <Button
           title='Settings'

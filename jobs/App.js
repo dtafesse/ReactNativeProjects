@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Icon } from "react-native-elements";
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -40,13 +41,19 @@ const MainNavigator = createBottomTabNavigator(
           },
           {
             navigationOptions: {
-              tabBarLabel: "Review Jobs"
+              tabBarLabel: "Review Jobs",
+              tabBarIcon: ({ tintColor }) => (
+                <Icon name='favorite' size={25} color={tintColor} />
+              )
             }
           }
         )
       },
       {
-        navigationOptions: { tabBarVisible: false }
+        navigationOptions: { tabBarVisible: false },
+        tabBarOptions: {
+          labelStyle: { fontSize: 11 }
+        }
       }
     )
   },
