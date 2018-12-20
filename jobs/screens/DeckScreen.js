@@ -15,7 +15,7 @@ class DeckScreen extends Component {
     };
   };
 
-  renderCard(job) {
+  renderCard = job => {
     const initialRegion = {
       longitude: job.longitude,
       latitude: job.latitude,
@@ -47,15 +47,26 @@ class DeckScreen extends Component {
         </View>
       </Card>
     );
-  }
+  };
 
-  renderNoMoreCards() {
-    return <Card title='No more jobs' />;
-  }
+  renderNoMoreCards = () => {
+    return (
+      <Card title='No More Jobs'>
+        <Button
+          title='Back To Map'
+          large
+          icon={{ name: "my-location" }}
+          backgroundColor='#03A9F4'
+          onPress={() => this.props.navigation.navigate("map")}
+        />
+      </Card>
+    );
+  };
 
   render() {
     return (
       <View style={{ paddingTop: getStatusBarHeight() }}>
+        {console.log(this.props.jobs)}
         <Swipe
           data={this.props.jobs}
           renderCard={this.renderCard}
