@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { Icon } from "react-native-elements";
 import {
   createBottomTabNavigator,
@@ -7,8 +7,9 @@ import {
   createAppContainer
 } from "react-navigation";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
-import store from "./store";
+import { store, persistor } from "./store";
 import AuthScreen from "./screens/AuthScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import MapScreen from "./screens/MapScreen";
@@ -67,10 +68,18 @@ const MainNavigator = createBottomTabNavigator(
 const AppContainer = createAppContainer(MainNavigator);
 
 export default class App extends React.Component {
+  renderLoading = () => (
+    <View style={styles.container}>
+      <ActivityIndicator size='large' />
+    </View>
+  );
+
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <PersistGate loading={this.renderLoading()} persistor={persistor}>
+          <AppContainer />
+        </PersistGate>
       </Provider>
     );
   }
