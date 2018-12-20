@@ -6,7 +6,8 @@ import {
   Dimensions,
   StyleSheet,
   LayoutAnimation,
-  UIManager
+  UIManager,
+  Platform
 } from "react-native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -16,7 +17,8 @@ const SWIPE_OUT_DURATION = 250; // in ms
 class Swipe extends Component {
   static defaultProps = {
     onSwipeRight: () => {},
-    onSwipeLeft: () => {}
+    onSwipeLeft: () => {},
+    keyProp: "id"
   };
 
   constructor(props) {
@@ -107,39 +109,43 @@ class Swipe extends Component {
       return this.props.renderNoMoreCards();
     }
 
-    return this.props.data
-      .map((item, i) => {
-        // if these cards are already swiped return null
-        if (i < this.state.index) {
-          return null;
-        }
+    const deck = this.props.data.map((item, i) => {
+      // if these cards are already swiped return null
+      if (i < this.state.index) {
+        return null;
+      }
 
-        // current active card
-        if (i === this.state.index) {
-          return (
-            <Animated.View
-              key={item.id}
-              style={[this.getCardStyle(), styles.cardStyle]}
-              {...this._panResponder.panHandlers}
-            >
-              {this.props.renderCard(item)}
-            </Animated.View>
-          );
-        }
-        // cards we have not gotten to, just render them
+      // current active card
+      if (i === this.state.index) {
         return (
-          // must be wrapped in an "Animated.view" to deal with flashing images
           <Animated.View
             key={item.id}
-            style={[styles.cardStyle, { top: 10 * (i - this.state.index) }]}
+            style={[this.getCardStyle(), styles.cardStyle]}
+            {...this._panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
           </Animated.View>
         );
-      })
-      .reverse();
+      }
+      // cards we have not gotten to, just render them
+      return (
+        // must be wrapped in an "Animated.view" to deal with flashing images
+        <Animated.View
+          key={item[this.props.keyProp]}
+          style={[
+            styles.cardStyle,
+            { top: 10 * (i - this.state.index), zindex: -i }
+          ]}
+        >
+          {this.props.renderCard(item)}
+        </Animated.View>
+      );
+    });
+
     // calling reverse because the style: position: "absolute"
     // makes the last card render 1st..
+
+    return Platform.OS === "android" ? deck : deck.reverse();
   }
 
   render() {

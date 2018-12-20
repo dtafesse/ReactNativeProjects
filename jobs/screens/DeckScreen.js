@@ -33,7 +33,7 @@ class DeckScreen extends Component {
           <Text>{job.company}</Text>
           <Text>{job.formattedRelativeTime}</Text>
         </View>
-        <Text>{job.snippet.replace(/<b>/g, "").replace(/<\/b/g, "")}</Text>
+        <Text> {job.snippet.replace(/<b>/g, "").replace(/<\/b/g, "")}</Text>
       </Card>
     );
   }
@@ -49,6 +49,7 @@ class DeckScreen extends Component {
           data={this.props.jobs}
           renderCard={this.renderCard}
           renderNoMoreCards={this.renderNoMoreCards}
+          keyProp='jobkey'
         />
       </View>
     );
