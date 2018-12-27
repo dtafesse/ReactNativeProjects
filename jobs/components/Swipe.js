@@ -133,8 +133,8 @@ class Swipe extends Component {
         <Animated.View
           key={item[this.props.keyProp]}
           style={[
-            styles.cardStyle,
-            { top: 10 * (i - this.state.index), zindex: -i }
+            styles.cardStyle
+            // { top: 10 * (i - this.state.index), zindex: -i }
           ]}
         >
           {this.props.renderCard(item)}
